@@ -1,0 +1,166 @@
+/* =========================================================
+   RESEARCHER SITE — shared stylesheet
+   Re-theme the whole site by editing the variables below.
+   ========================================================= */
+
+:root {
+  /* EDIT: colors — change these to re-theme everything */
+  --paper:      #f6f3ec;   /* page background  */
+  --paper-2:    #efeae0;   /* cards / panels   */
+  --ink:        #1c1b18;   /* main text        */
+  --ink-soft:   #555049;   /* secondary text   */
+  --accent:     #9c4221;   /* links & accents (warm rust) */
+  --accent-2:   #2f4f4f;   /* secondary accent (deep slate)*/
+  --line:       #d8d1c4;   /* hairlines / borders */
+
+  /* Fonts (loaded from Google Fonts in each HTML <head>) */
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body:    "Newsreader", Georgia, serif;
+
+  --maxw: 820px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.12rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* subtle paper grain via layered gradients */
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(156,66,33,.05), transparent 38%),
+    radial-gradient(circle at 88% 78%, rgba(47,79,79,.05), transparent 42%);
+  z-index: -1;
+}
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 1.4rem; }
+
+/* ---------- Navigation ---------- */
+header.site-nav {
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+  position: sticky; top: 0; z-index: 50;
+}
+.nav-inner {
+  max-width: var(--maxw); margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.4rem;
+}
+.brand {
+  font-family: var(--font-display);
+  font-weight: 600; font-size: 1.25rem; letter-spacing: -.01em;
+  color: var(--ink); text-decoration: none;
+}
+.brand span { color: var(--accent); }
+.nav-links { display: flex; gap: 1.6rem; list-style: none; }
+.nav-links a {
+  color: var(--ink-soft); text-decoration: none;
+  font-size: .98rem; letter-spacing: .02em;
+  padding-bottom: 3px; border-bottom: 2px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-links a.active { color: var(--accent); border-color: var(--accent); }
+
+.nav-toggle { display: none; background: none; border: 0; cursor: pointer;
+  font-size: 1.5rem; color: var(--ink); }
+
+/* ---------- Hero ---------- */
+.hero { padding: 4.5rem 0 2.5rem; }
+.eyebrow {
+  font-size: .82rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--accent); font-family: var(--font-body); margin-bottom: 1rem;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 600; font-size: clamp(2.6rem, 6vw, 4rem);
+  line-height: 1.05; letter-spacing: -.02em; margin-bottom: .6rem;
+}
+.hero .role { font-size: 1.25rem; color: var(--ink-soft); font-style: italic; }
+.hero .affil { margin-top: .3rem; color: var(--ink-soft); font-size: 1.05rem; }
+
+/* staggered load animation */
+.hero > * { opacity: 0; transform: translateY(14px); animation: rise .7s forwards; }
+.hero > *:nth-child(1) { animation-delay: .05s; }
+.hero > *:nth-child(2) { animation-delay: .15s; }
+.hero > *:nth-child(3) { animation-delay: .25s; }
+.hero > *:nth-child(4) { animation-delay: .35s; }
+@keyframes rise { to { opacity: 1; transform: none; } }
+
+/* ---------- Sections / typography ---------- */
+main { padding-bottom: 5rem; }
+section { padding: 2.2rem 0; border-top: 1px solid var(--line); }
+section:first-of-type { border-top: 0; }
+
+h2 {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: 1.9rem; letter-spacing: -.01em; margin-bottom: 1.1rem;
+}
+h3 { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; margin: 1.4rem 0 .4rem; }
+p { margin-bottom: 1.1rem; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color .2s; }
+p a:hover, li a:hover { border-color: var(--accent); }
+
+/* research-interest tags */
+.tags { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .5rem; }
+.tags span {
+  background: var(--paper-2); border: 1px solid var(--line);
+  padding: .35rem .85rem; border-radius: 999px; font-size: .92rem; color: var(--accent-2);
+}
+
+/* contact / link row */
+.links { display: flex; flex-wrap: wrap; gap: 1.4rem; margin-top: .4rem; }
+.links a { font-size: 1rem; }
+
+/* publication list */
+.pub-list { list-style: none; }
+.pub-list li { padding: 1rem 0; border-bottom: 1px dashed var(--line); }
+.pub-list .pub-title { font-weight: 600; color: var(--ink); }
+.pub-list .pub-meta { color: var(--ink-soft); font-size: .98rem; font-style: italic; }
+.pub-list .pub-links { font-size: .9rem; margin-top: .25rem; display: flex; gap: 1rem; }
+.pub-year {
+  display: inline-block; font-family: var(--font-display); color: var(--accent);
+  font-weight: 600; margin-right: .5rem;
+}
+
+/* resource cards */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 1.2rem; }
+.card {
+  background: var(--paper-2); border: 1px solid var(--line);
+  border-radius: 10px; padding: 1.4rem; transition: transform .2s, box-shadow .2s;
+}
+.card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(28,27,24,.08); }
+.card h3 { margin-top: 0; }
+.card p { font-size: 1rem; color: var(--ink-soft); margin-bottom: .8rem; }
+
+/* ---------- Footer ---------- */
+footer {
+  border-top: 1px solid var(--line); padding: 2rem 0;
+  color: var(--ink-soft); font-size: .9rem; text-align: center;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+  .nav-toggle { display: block; }
+  .nav-links {
+    position: absolute; top: 100%; right: 0; left: 0;
+    flex-direction: column; gap: 0; background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    max-height: 0; overflow: hidden; transition: max-height .3s ease;
+  }
+  .nav-links.open { max-height: 320px; }
+  .nav-links li { padding: .2rem 1.4rem; }
+  .nav-links li a { display: block; padding: .7rem 0; }
+}

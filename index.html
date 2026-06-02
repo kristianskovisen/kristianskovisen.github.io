@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- EDIT: your name + a short description for search engines -->
+  <title>Dr. Jane Doe — Researcher</title>
+  <meta name="description" content="Personal academic website of Dr. Jane Doe, researcher in ..." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== Navigation (identical on every page; just change which link has class="active") ===== -->
+  <header class="site-nav">
+    <div class="nav-inner">
+      <!-- EDIT: your name -->
+      <a class="brand" href="index.html">Jane <span>Doe</span></a>
+      <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('menu').classList.toggle('open')">&#9776;</button>
+      <ul class="nav-links" id="menu">
+        <li><a class="active" href="index.html">Home</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="resources.html">Resources</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <div class="wrap">
+    <section class="hero">
+      <p class="eyebrow">Researcher &middot; Educator</p>
+      <!-- EDIT: name -->
+      <h1>Dr. Jane Doe</h1>
+      <!-- EDIT: role / title -->
+      <p class="role">Postdoctoral Researcher in Computational Biology</p>
+      <!-- EDIT: affiliation -->
+      <p class="affil">Department of Life Sciences, University of Somewhere</p>
+    </section>
+
+    <main>
+      <!-- ===== About ===== -->
+      <section>
+        <h2>About</h2>
+        <!-- EDIT: 2–3 sentence bio -->
+        <p>
+          I study how cells make decisions under uncertainty, combining single-cell
+          experiments with mathematical modeling. My work aims to bridge molecular
+          mechanisms and large-scale tissue behavior. Before joining University of
+          Somewhere, I completed my PhD at University of Elsewhere.
+        </p>
+        <p>
+          I am currently looking for collaborators interested in the intersection of
+          machine learning and developmental biology.
+        </p>
+      </section>
+
+      <!-- ===== Research interests ===== -->
+      <section>
+        <h2>Research interests</h2>
+        <!-- EDIT: add or remove tags -->
+        <div class="tags">
+          <span>Single-cell genomics</span>
+          <span>Dynamical systems</span>
+          <span>Machine learning</span>
+          <span>Developmental biology</span>
+          <span>Statistical modeling</span>
+        </div>
+      </section>
+
+      <!-- ===== Contact / links ===== -->
+      <section>
+        <h2>Find me</h2>
+        <div class="links">
+          <!-- EDIT: replace with your real links/handles -->
+          <a href="mailto:jane.doe@university.edu">Email</a>
+          <a href="https://scholar.google.com/" target="_blank" rel="noopener">Google Scholar</a>
+          <a href="https://orcid.org/" target="_blank" rel="noopener">ORCID</a>
+          <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="cv.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <!-- EDIT: name + year -->
+    <p>&copy; 2026 Jane Doe &middot; Built with GitHub Pages</p>
+  </footer>
+
+</body>
+</html>
