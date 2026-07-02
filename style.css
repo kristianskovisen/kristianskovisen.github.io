@@ -1,45 +1,232 @@
+/* =========================================================================
+   Kristian Skov Isen — academic site
+   Simple, quiet, professional.
+   Fraunces (name + titles) · Newsreader (body) · IBM Plex Mono (labels)
+   ========================================================================= */
+
 :root {
-  --ink: #1a1a1a;
-  --muted: #666;
-  --accent: #7a1f2b;      /* pick something understated */
-  --max-width: 720px;
+  --paper:  #f6f7f8;
+  --card:   #ffffff;
+  --ink:    #17222c;
+  --ink-2:  #47555f;
+  --muted:  #78848f;
+  --line:   #e4e8ec;
+  --line-2: #d6dbe0;
+  --accent: #0c3d63;   /* deep Aarhus-inspired blue */
+  --accent-h: #0a2f4d;
+
+  --display: "Fraunces", Georgia, serif;
+  --body:    "Newsreader", Georgia, serif;
+  --mono:    "IBM Plex Mono", ui-monospace, Menlo, monospace;
 }
 
-* { box-sizing: border-box; }
-
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
 body {
-  font-family: Georgia, "Times New Roman", serif;
-  color: var(--ink);
-  line-height: 1.6;
   margin: 0;
-  background: #fdfdfb;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: clamp(1.02rem, 0.5vw + 0.92rem, 1.12rem);
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+a { color: var(--accent); text-decoration: none; }
+
+.wrap {
+  max-width: 720px;
+  margin-inline: auto;
+  padding: clamp(1.25rem, 5vw, 2rem);
 }
 
-nav {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 1.5rem 1rem;
-  display: flex;
-  gap: 1.5rem;
-}
-
-nav a { color: var(--accent); text-decoration: none; }
-nav a:hover { text-decoration: underline; }
-
-main { max-width: var(--max-width); margin: 0 auto; padding: 1rem; }
-
-.intro { display: flex; gap: 2rem; align-items: flex-start; }
-.headshot { width: 160px; border-radius: 4px; }
-
-h1 { margin-top: 0; }
-footer {
-  max-width: var(--max-width);
-  margin: 3rem auto 2rem;
-  padding: 0 1rem;
+/* ---------- shared labels ---------- */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: var(--muted);
-  font-size: 0.9rem;
+  margin: 0 0 0.9rem;
+}
+.section-title {
+  font-family: var(--display);
+  font-optical-sizing: auto;
+  font-weight: 540;
+  font-size: 1.4rem;
+  letter-spacing: -0.01em;
+  margin: 0 0 1rem;
 }
 
-@media (max-width: 600px) {
-  .intro { flex-direction: column; }
+/* ---------- header ---------- */
+.hero { padding-block: clamp(2.5rem, 8vw, 4.5rem) clamp(1.5rem, 4vw, 2.5rem); }
+
+.hero__top {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.25rem, 4vw, 2rem);
+  margin-bottom: 1.6rem;
+}
+.hero__id { min-width: 0; }
+
+.portrait {
+  flex: 0 0 auto;
+  width: clamp(96px, 22vw, 148px);
+  aspect-ratio: 1;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid var(--line-2);
+  background: #eef1f4;
+}
+.portrait--empty {
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hero__name {
+  font-family: var(--display);
+  font-optical-sizing: auto;
+  font-weight: 540;
+  font-size: clamp(2.4rem, 7vw, 3.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: 0.3rem 0 0.7rem;
+}
+
+.hero__role {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--ink-2);
+  line-height: 1.55;
+  margin: 0 0 1.5rem;
+}
+.hero__role strong { color: var(--ink); font-weight: 600; }
+
+.hero__bio {
+  color: var(--ink-2);
+  margin: 0 0 1.6rem;
+}
+.hero__bio em { color: var(--ink); font-style: italic; }
+
+/* contact links — quiet inline text with separators */
+.links {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0;
+  padding: 0;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+}
+.links li { display: flex; align-items: center; }
+.links li:not(:last-child)::after {
+  content: "/";
+  color: var(--line-2);
+  margin: 0 0.75rem;
+}
+.links a {
+  color: var(--ink);
+  border-bottom: 1px solid var(--line-2);
+  padding-bottom: 1px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.links a:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ---------- sections ---------- */
+.section {
+  padding-block: clamp(1.8rem, 5vw, 2.6rem);
+  border-top: 1px solid var(--line);
+}
+
+/* research interests — a simple readable line */
+.interests {
+  color: var(--ink-2);
+  margin: 0;
+}
+.interests b {
+  color: var(--ink);
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* ---------- working paper ---------- */
+.paper__meta {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 0.7rem;
+}
+.paper__title {
+  font-family: var(--display);
+  font-optical-sizing: auto;
+  font-weight: 540;
+  font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  margin: 0 0 1rem;
+}
+.paper__abstract {
+  color: var(--ink-2);
+  margin: 0 0 1.5rem;
+}
+.paper__abstract p { margin: 0; }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.9rem;
+}
+.btn {
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 6px;
+  border: 1px solid var(--line-2);
+  color: var(--ink);
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.btn svg { width: 14px; height: 14px; stroke: currentColor; }
+.btn:hover { color: var(--accent); border-color: var(--accent); }
+.btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.btn--primary:hover { background: var(--accent-h); border-color: var(--accent-h); color: #fff; }
+.actions .note {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+/* ---------- footer ---------- */
+.foot {
+  border-top: 1px solid var(--line);
+  padding-block: 2rem 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+/* ---------- a11y ---------- */
+a:focus-visible, .btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }

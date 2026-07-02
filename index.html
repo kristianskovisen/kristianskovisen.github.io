@@ -1,40 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kristian Skov Isen, PhD-student @ Department of Economics, Aarhus University</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kristian Skov Isen — Economics, Aarhus University</title>
+  <meta name="description" content="Kristian Skov Isen is a PhD candidate in economics at Aarhus University, studying multi-product firms, firm scope, and task-based product relatedness." />
+  <meta name="author" content="Kristian Skov Isen" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Kristian Skov Isen — Economics, Aarhus University" />
+  <meta property="og:description" content="PhD candidate studying multi-product firms, firm scope, and task-based product relatedness." />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230c3d63'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' fill='white' text-anchor='middle'%3EKI%3C/text%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="research.html">Research</a>
-      <a href="data.html">Data &amp; Code</a>
-      <a href="resources.html">Resources</a>
-    </nav>
-  </header>
+  <main class="wrap">
 
-  <main>
-    <section class="intro">
-      <img src="assets/headshot.jpg" alt="Kristian Skovisen" class="headshot">
-      <div>
-        <h1>Kristian Skovisen</h1>
-        <p>PhD Student, Department of Economics<br>
-           Aarhus University</p>
-        <p>I study firm organization, multi-product firms, and
-           product relatedness.</p>
-        <p>
-          <a href="assets/cv.pdf">CV</a> ·
-          <a href="mailto:isen@econ.au.dk">Email</a> ·
-        </p>
+    <!-- ===================== HEADER ===================== -->
+    <header class="hero">
+      <div class="hero__top">
+        <!-- Add your photo as assets/portrait.jpg (roughly square works best). -->
+        <img class="portrait" src="assets/portrait.jpg" alt="Kristian Skov Isen"
+             onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'portrait portrait--empty',textContent:'Photo'}))" />
+
+        <div class="hero__id">
+          <p class="eyebrow">Aarhus University</p>
+          <h1 class="hero__name">Kristian Skov Isen</h1>
+          <p class="hero__role">
+            <strong>PhD Candidate</strong> in Economics<br />
+            Department of Economics and Business Economics
+          </p>
+        </div>
       </div>
-    </section>
-  </main>
 
-  <footer>
-    <p>Last updated July 2026</p>
-  </footer>
+      <p class="hero__bio">
+        I study how <em>multi-product firms</em> decide which products to make,
+        using the task and occupational composition of a firm's workforce as a
+        window into its capabilities. I combine Danish matched employer&ndash;employee
+        data with new measures of product relatedness to understand firm scope,
+        diversification, and organization.
+      </p>
+
+      <!-- Replace the hrefs below with your real links; delete any you don't use. -->
+      <ul class="links">
+        <li><a href="mailto:kristian.isen@econ.au.dk">Email</a></li>
+        <li><a href="https://www.linkedin.com/in/kristianskovisen/" target="_blank" rel="noopener">LinkedIn</a></li>
+      </ul>
+    </header>
+
+    <!-- ===================== RESEARCH INTERESTS ===================== -->
+    <section class="section" aria-labelledby="interests-title">
+      <h2 class="section-title" id="interests-title">Research interests</h2>
+      <p class="interests">
+        <b>Multi-product firms</b> and firm scope, <b>labor economics</b>,
+        <b>international trade</b>, firm organization and task reallocation,
+        task-based measures of relatedness, and matched employer&ndash;employee data.
+      </p>
+    </section>
+
+    <!-- ===================== WORKING PAPERS ===================== -->
+    <section class="section" id="papers" aria-labelledby="papers-title">
+      <h2 class="section-title" id="papers-title">Working papers</h2>
+
+      <article class="paper">
+        <p class="paper__meta">Working paper &middot; July 2026</p>
+
+        <h3 class="paper__title">Product Relatedness in Tasks: A Novel Measure and Multi-Product Firms</h3>
+
+        <div class="paper__abstract">
+          <p>Products vary in the tasks they require and, consequently, in the
+          occupations they entail. I introduce a novel measure of product relatedness
+          based on the observed occupational composition of single-product manufacturers
+          in Denmark. Using matched employer&ndash;employee data, I construct product-level
+          vectors of task requirements and introduce a similarity measure that combines
+          occupational overlap with skill transferability inferred from worker flows. The
+          results show that firms expand into products that are highly similar to their
+          core product and drop products that are more distant in task space &mdash;
+          supporting a theoretical expectation of increased marginal costs of producing
+          away from core competencies. These findings highlight the role of workforce
+          composition in shaping firm scope and provide a task-based perspective on
+          diversification.</p>
+        </div>
+
+        <!-- Point these at the PDFs you place in /assets (see README). -->
+        <div class="actions">
+          <a class="btn btn--primary" href="assets/isen_product_relatedness_in_tasks.pdf">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            Draft (PDF)
+          </a>
+          <a class="btn" href="assets/isen_product_relatedness_slides.pdf">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            Slides (PDF)
+          </a>
+          <span class="note">Presented at the CEFAU Spring Retreat, May 2026</span>
+        </div>
+      </article>
+    </section>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="foot">
+      <span>&copy; 2026 Kristian Skov Isen</span>
+      <span>Aarhus, Denmark</span>
+    </footer>
+
+  </main>
 </body>
 </html>
