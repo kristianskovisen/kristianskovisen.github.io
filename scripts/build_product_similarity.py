@@ -1,25 +1,30 @@
 """
 Build the interactive prod-prod weighted similarity heatmap (online appendix
-counterpart to Figure 3 / fig:heatmap_product_similarities in the paper).
+counterpart to Figure 4 / fig:heatmap_product_similarities in the paper).
+
+The weighted matrix is directional: rows are origin products omega, columns
+destination products omega'. Colours follow the paper figure
+(Code/Python/RiO_heatmap.py): viridis with a power transform, gamma = 1.5.
 
 Reads:
-  - Exports/03-2026/03 - Product similarities/03.02 - Prod-prod similarities/
-    RiO prod-prod similarity matrix WEIGHTED.csv
+  - Exports/10-2026/RiO prod-prod similarity matrix WEIGHTED.csv
   - Data/Varenr labels/product_codes_4digit_summary.csv
 
 Writes (into the kristianskovisen.github.io repo):
   - online-appendix/product-similarity.html   (full standalone page)
   - online-appendix/data/prod_prod_similarity_weighted_matrix.csv (labeled square matrix)
-  - online-appendix/data/prod_prod_similarity_weighted_pairs.csv  (tidy pairwise, i<j)
+  - online-appendix/data/prod_prod_similarity_weighted_pairs.csv  (one row per pair, both directions)
 """
+import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-import json
+from matplotlib import colormaps
+from matplotlib.colors import to_hex
 
 PROJECT = "/Users/au563401/Library/CloudStorage/OneDrive-Aarhusuniversitet/Dokumenter/Projects/CH1 Relatedness in Occupations"
 SITE = "/Users/au563401/Documents/GitHub/kristianskovisen"
 
-MATRIX_CSV = f"{PROJECT}/Exports/03-2026/03 - Product similarities/03.02 - Prod-prod similarities/RiO prod-prod similarity matrix WEIGHTED.csv"
+MATRIX_CSV = f"{PROJECT}/Exports/10-2026/RiO prod-prod similarity matrix WEIGHTED.csv"
 LABELS_CSV = f"{PROJECT}/Data/Varenr labels/product_codes_4digit_summary.csv"
 
 OUT_HTML = f"{SITE}/online-appendix/product-similarity.html"
@@ -43,14 +48,22 @@ axis_labels = [f"{c}" for c in codes]
 # ---------------------------------------------------------------- hover text
 z = mat.values.round(4)
 n = len(codes)
+# Rows are origin products (omega), columns destination products (omega').
 hover = [
     [
-        f"{codes[i]}: {names[i]}<br>{codes[j]}: {names[j]}<br>"
-        f"Weighted similarity Φ: {z[i, j]:.3f}"
+        f"Origin ω: {codes[i]} {names[i]}<br>"
+        f"Destination ω′: {codes[j]} {names[j]}<br>"
+        f"Φ(ω, ω′) = {z[i, j]:.3f}  ·  reverse Φ(ω′, ω) = {z[j, i]:.3f}"
         for j in range(n)
     ]
     for i in range(n)
 ]
+
+# ---------------------------------------------------------------- colour scale
+# Same mapping as the paper figure: colour = viridis(value ** GAMMA).
+GAMMA = 1.5
+_viridis = colormaps["viridis"]
+colorscale = [[float(v), to_hex(_viridis(v ** GAMMA))] for v in np.linspace(0, 1, 41)]
 
 # ---------------------------------------------------------------- figure
 fig = go.Figure(
@@ -60,11 +73,11 @@ fig = go.Figure(
         y=axis_labels,
         text=hover,
         hoverinfo="text",
-        colorscale="Viridis",
+        colorscale=colorscale,
         zmin=0,
         zmax=1,
         colorbar=dict(
-            title=dict(text="Weighted<br>similarity Φ", font=dict(family="IBM Plex Mono, monospace", size=11)),
+            title=dict(text="Φ(ω, ω′)", font=dict(family="IBM Plex Mono, monospace", size=11)),
             tickfont=dict(family="IBM Plex Mono, monospace", size=10),
             thickness=14,
         ),
@@ -75,12 +88,14 @@ fig = go.Figure(
 
 fig.update_layout(
     xaxis=dict(
+        title=dict(text="Destination product ω′", font=dict(size=13)),
         tickfont=dict(family="IBM Plex Mono, monospace", size=8),
         tickangle=90,
         showgrid=False,
         constrain="domain",
     ),
     yaxis=dict(
+        title=dict(text="Origin product ω", font=dict(size=13)),
         tickfont=dict(family="IBM Plex Mono, monospace", size=8),
         showgrid=False,
         autorange="reversed",
@@ -107,15 +122,19 @@ import os
 os.makedirs(OUT_DATA_DIR, exist_ok=True)
 
 labeled_matrix = mat.copy()
-labeled_matrix.index.name = "hs4"
+labeled_matrix.index.name = "origin_hs4"  # rows = origin, columns = destination
 labeled_matrix.to_csv(OUT_MATRIX_CSV)
 
+# One row per unordered pair, as in the paper's top-30 table: the origin is the
+# product in the direction with the higher similarity; the reverse is reported too.
 pairs = []
 for i in range(n):
     for j in range(i + 1, n):
-        pairs.append((codes[i], names[i], codes[j], names[j], z[i, j]))
-pairs_df = pd.DataFrame(pairs, columns=["product_i", "name_i", "product_j", "name_j", "weighted_similarity"])
-pairs_df.sort_values("weighted_similarity", ascending=False, inplace=True)
+        o, d = (i, j) if z[i, j] >= z[j, i] else (j, i)
+        pairs.append((codes[o], names[o], codes[d], names[d], z[o, d], z[d, o]))
+pairs_df = pd.DataFrame(pairs, columns=["origin", "origin_name", "destination", "destination_name",
+                                        "phi_origin_destination", "phi_destination_origin"])
+pairs_df.sort_values("phi_origin_destination", ascending=False, inplace=True)
 pairs_df.to_csv(OUT_PAIRS_CSV, index=False)
 
 print("n products:", n)
@@ -129,7 +148,7 @@ page = f"""<!DOCTYPE html>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Online Appendix &middot; Product-Product Similarity &mdash; Kristian Skov Isen</title>
-  <meta name="description" content="Interactive version of Figure 3: bilateral task-based similarity between products, weighted by occupational skill transferability." />
+  <meta name="description" content="Interactive version of Figure 4: directional task-based similarity between products, weighted by occupational skill transferability." />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230c3d63'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' fill='white' text-anchor='middle'%3EKI%3C/text%3E%3C/svg%3E" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -170,28 +189,33 @@ page = f"""<!DOCTYPE html>
     <p class="eyebrow">Online appendix &middot; Product Relatedness in Tasks</p>
     <h1 class="appendix-title">Product-product similarity in occupations</h1>
     <p class="appendix-note">
-      Interactive counterpart to Figure 3 of the paper. Each cell is the weighted
-      cosine similarity &Phi;(&omega;, &omega;&prime;) between two HS4 products'
-      occupational task vectors, extended with a skill-transferability weighting
-      matrix estimated from excess worker flows between occupations. Values closer
-      to 1 (bright yellow) indicate products whose production draws on very similar
-      occupations; values closer to 0 (dark blue/purple) indicate little occupational
-      overlap. The diagonal equals 1 by construction. Only products satisfying GDPR
-      thresholds (more than five single-product firms observed, 2010&ndash;2019) are
-      included. Hover over any tile to see the two HS4 product codes, their names,
-      and the weighted similarity value.
+      Interactive counterpart to Figure 4 of the paper. Each cell is the directional
+      task similarity &Phi;(&omega;, &omega;&prime;) between two HS4 products'
+      occupational task vectors, weighted by asymmetric skill transferability
+      estimated from worker flows between occupations. Origin products &omega; are
+      in rows and destination products &omega;&prime; in columns, so the matrix is
+      not symmetric: &Phi;(&omega;, &omega;&prime;) and &Phi;(&omega;&prime;, &omega;)
+      can differ. Values closer to 1 (bright yellow) indicate products whose
+      production draws on very similar occupations; values closer to 0 (dark blue)
+      indicate little occupational overlap. The diagonal equals 1 by construction.
+      Only products satisfying GDPR thresholds (more than five single-product firms
+      observed, 2010&ndash;2019) are included. Hover over any tile to see the two
+      HS4 product codes, their names, and the similarity in both directions.
     </p>
 
     <div class="plot-card">
       {plot_html}
     </div>
-    <p class="legend-note">{n} products &middot; {n * (n - 1) // 2:,} unique pairs &middot; colorscale: viridis</p>
+    <p class="legend-note">{n} products &middot; {n * (n - 1):,} directional pairs &middot; colour scale: viridis, &gamma; = {GAMMA}</p>
 
     <section class="section" id="download" aria-labelledby="download-title">
       <h2 class="section-title" id="download-title">Download the data</h2>
       <p class="appendix-note">
-        The full weighted similarity matrix and a tidy pairwise version (sorted by
-        similarity, one row per unique product pair) are available below.
+        The full directional similarity matrix (rows = origin &omega;, columns =
+        destination &omega;&prime;) and a tidy pairwise version are available below.
+        The pairwise file has one row per product pair, sorted by similarity: the
+        origin is the product in the direction with the higher value, and the
+        reverse direction is reported in the last column.
       </p>
       <div class="actions">
         <a class="btn btn--primary" href="data/prod_prod_similarity_weighted_pairs.csv" download>
